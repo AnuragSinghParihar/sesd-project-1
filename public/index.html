@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Planner — Organize Your Academic Life</title>
+  <meta name="description" content="A secure, backend-focused study management platform to organize subjects, tasks, and study sessions.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Auth Screen -->
+  <div id="auth-screen" class="screen active">
+    <div class="auth-container">
+      <div class="auth-hero">
+        <div class="hero-glow"></div>
+        <div class="hero-content">
+          <div class="logo">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <rect width="48" height="48" rx="14" fill="url(#logo-grad)"/>
+              <path d="M14 34V18L24 12L34 18V34" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M20 28V22L24 20L28 22V28" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="24" cy="16" r="2" fill="white"/>
+              <defs><linearGradient id="logo-grad" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#6C63FF"/><stop offset="1" stop-color="#4ECDC4"/></linearGradient></defs>
+            </svg>
+          </div>
+          <h1>Study Planner</h1>
+          <p class="hero-subtitle">Organize your academic workflow. Track subjects, manage tasks, and log study sessions — all in one place.</p>
+        </div>
+      </div>
+      
+      <div class="auth-form-wrapper">
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-tab="login">Sign In</button>
+          <button class="auth-tab" data-tab="register">Sign Up</button>
+        </div>
+        
+        <form id="login-form" class="auth-form active">
+          <div class="form-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full" id="login-btn">
+            <span>Sign In</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </form>
+
+        <form id="register-form" class="auth-form">
+          <div class="form-group">
+            <label for="register-name">Full Name</label>
+            <input type="text" id="register-name" placeholder="John Doe" required>
+          </div>
+          <div class="form-group">
+            <label for="register-email">Email</label>
+            <input type="email" id="register-email" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="register-password">Password</label>
+            <input type="password" id="register-password" placeholder="Min 6 characters" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full" id="register-btn">
+            <span>Create Account</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </form>
+        
+        <div id="auth-error" class="error-msg hidden"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Screen -->
+  <div id="dashboard-screen" class="screen">
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+      <div class="nav-left">
+        <svg width="32" height="32" viewBox="0 0 48 48" fill="none">
+          <rect width="48" height="48" rx="14" fill="url(#logo-grad2)"/>
+          <path d="M14 34V18L24 12L34 18V34" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M20 28V22L24 20L28 22V28" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="24" cy="16" r="2" fill="white"/>
+          <defs><linearGradient id="logo-grad2" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#6C63FF"/><stop offset="1" stop-color="#4ECDC4"/></linearGradient></defs>
+        </svg>
+        <span class="nav-title">Study Planner</span>
+      </div>
+      <div class="nav-right">
+        <span id="user-greeting" class="greeting"></span>
+        <button class="btn btn-ghost" id="logout-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+          Logout
+        </button>
+      </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <main class="dashboard">
+      <!-- Stats Row -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon subjects-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-subjects">0</span>
+            <span class="stat-label">Subjects</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon tasks-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-tasks">0</span>
+            <span class="stat-label">Tasks</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon sessions-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-sessions">0</span>
+            <span class="stat-label">Sessions</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon completed-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-completed">0</span>
+            <span class="stat-label">Completed</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Navigation -->
+      <div class="tab-nav">
+        <button class="tab-btn active" data-section="subjects">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Subjects
+        </button>
+        <button class="tab-btn" data-section="tasks">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          Tasks
+        </button>
+        <button class="tab-btn" data-section="sessions">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Sessions
+        </button>
+      </div>
+
+      <!-- Subjects Section -->
+      <section id="subjects-section" class="content-section active">
+        <div class="section-header">
+          <h2>Your Subjects</h2>
+          <button class="btn btn-primary btn-sm" id="add-subject-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Subject
+          </button>
+        </div>
+        <div id="add-subject-form" class="inline-form hidden">
+          <input type="text" id="subject-name-input" placeholder="Subject name (e.g., Mathematics)">
+          <button class="btn btn-primary btn-sm" id="save-subject-btn">Save</button>
+          <button class="btn btn-ghost btn-sm" id="cancel-subject-btn">Cancel</button>
+        </div>
+        <div id="subjects-list" class="items-grid">
+          <div class="empty-state">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+            <p>No subjects yet. Add your first subject to get started!</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tasks Section -->
+      <section id="tasks-section" class="content-section">
+        <div class="section-header">
+          <h2>Your Tasks</h2>
+          <button class="btn btn-primary btn-sm" id="add-task-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Task
+          </button>
+        </div>
+        <div id="add-task-form" class="inline-form hidden">
+          <input type="text" id="task-title-input" placeholder="Task title">
+          <input type="text" id="task-desc-input" placeholder="Description (optional)">
+          <select id="task-subject-select"><option value="">Select subject</option></select>
+          <input type="date" id="task-deadline-input">
+          <button class="btn btn-primary btn-sm" id="save-task-btn">Save</button>
+          <button class="btn btn-ghost btn-sm" id="cancel-task-btn">Cancel</button>
+        </div>
+        <div id="tasks-list" class="items-list">
+          <div class="empty-state">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+            <p>No tasks yet. Create a task to start tracking your work!</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sessions Section -->
+      <section id="sessions-section" class="content-section">
+        <div class="section-header">
+          <h2>Study Sessions</h2>
+          <button class="btn btn-primary btn-sm" id="start-session-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Start Session
+          </button>
+        </div>
+        <div id="start-session-form" class="inline-form hidden">
+          <select id="session-subject-select"><option value="">Select subject</option></select>
+          <button class="btn btn-primary btn-sm" id="save-session-btn">Start</button>
+          <button class="btn btn-ghost btn-sm" id="cancel-session-btn">Cancel</button>
+        </div>
+        <div id="sessions-list" class="items-list">
+          <div class="empty-state">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <p>No sessions yet. Start a study session to track your time!</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
